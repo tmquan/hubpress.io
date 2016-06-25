@@ -15,7 +15,7 @@ image:http://hvcl.unist.ac.kr/wordpress/wp-content/papercite-data/journal/quan_f
 
 To more directly apply my skills to neuroscience applications, I started working on several 3D stencil operations that leverage GPUs using either our own domain specific language (Vivaldi), which uses a parallel programming paradigm implicitly or explicit CUDA. I developed an algorithm for the segmentation of 3D electron microscope zebrafish brain images, which uses median, standard deviation, and bilateral filtering combined with erosion and adaptive thresholding operations. The solution includes hidden halo communications, implemented by my colleague for out-of-core problems, scales well to large datasets on a distributed 16-GPU cluster. Based on this GPU-related work, our laboratory has been selected as the first NVIDIA CUDA research center in Korea in 2014. 
 
-image:http://hvcl.unist.ac.kr/wordpress/wp-content/papercite-data/journal/choi_vivaldi_2014.png[]
+image:http://hvcl.unist.ac.kr/wordpress/wp-content/uploads/2015/08/Segmentation-EM-1024x359.png[]
 
 My work on Vivaldi serves as another example of my support for neuroscience through applications that leverage GPUs. The question that comes up into my mind at this moment is "Can I do something special, novel and robust to combine the sparsity and learning methods to practical problems in neuroscience, such as segmentation and visualization of brain-cell activities? Taken together, the research I have described illustrates that I have started to chase my goal of overcoming the many challenging problems related to exploring large-scale neural data. 
 
