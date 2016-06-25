@@ -9,7 +9,10 @@
     "description": "I am a fifth-year PhD student in School of Electrical Computer Engineering at Ulsan National Institute of Science and Technology (UNIST). ",
     "cover": "https://scontent-icn1-1.xx.fbcdn.net/t31.0-8/12091174_10153277242835208_8681009431302475475_o.jpg"
   },
-  "socialnetwork": {},
+  "socialnetwork": {
+    "facebook": "http://facebook.com/gpgpu",
+    "github": "http://github.com/tmquan"
+  },
   "theme": {
     "name": "casper"
   }
