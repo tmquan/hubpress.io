@@ -4,7 +4,11 @@
     "repositoryName": "tmquan.github.io",
     "branch": "master"
   },
+  "site": {
+    "cover": "https://scontent-icn1-1.xx.fbcdn.net/v/t35.0-12/11297143_10152976223230208_1820831579_o.jpg?oh=0e6034624d0ef86ef8c3863dff9cc05c&oe=5770EAA2"
+  },
+  "socialnetwork": {},
   "theme": {
-    "name": "Casper"
+    "name": "saga"
   }
 }
