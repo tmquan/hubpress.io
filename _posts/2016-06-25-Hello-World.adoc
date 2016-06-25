@@ -1,5 +1,5 @@
 = Hello World
-image::https://scontent-icn1-1.xx.fbcdn.net/t31.0-8/13063307_10153665916875208_2055562288901820800_o.jpg[]
+:hp-image: https://scontent-icn1-1.xx.fbcdn.net/t31.0-8/13063307_10153665916875208_2055562288901820800_o.jpg[]
 
 "How does the brain work?" is a question that has baffled biologists for centuries.  Recently, however, new methods for measuring the activity of and determining the structure of neural circuits developed by a diverse group of scientists is enabling unprecedented exploration of how the most complicated organ in our bodies generates our complex behaviors. 
 During joint work with Harvard Medical School, I came to respect the highly complex nature of neural data, the analysis of which requires combining the knowledge of wide range interdisciplinary research fields such as biology, engineering, and many other natural sciences. The data collected from state-of-the-art neuroscience techniques (e.g., serial-section EM, ECG, EEG) are  massive and very high-dimensional in general. From this work, I have come to appreciate that the key to successful exploration of neural data is the use of computationally efficient and interactive design tools for scientific computing and visualization. This is where I see big potential for computer science to enhance neuroscience investigations through the use of many-core GPU accelerators.
