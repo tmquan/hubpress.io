@@ -88,5 +88,5 @@ iren.Start()
 :asciidoctor-source:
 image:https://github.com/tmquan/deepVolumeRendering/blob/master/render.gif?raw=true[]
 
-To this end, we have just started a very simple approach which leverages the built-in implementations of Volume Rendering technique in VTK to construct a 3D viewer and “see” the stack of 2D images in a different viewpoint. Many features are worth exploiting such as incorporating the Qt Graphics User Interface to add a transfer function editor in order to adjust the color and opacity without hardcoded their values. 
+To this end, we have just started a very simple approach which leverages the built-in implementations of Volume Rendering technique in VTK to construct a 3D viewer and “see” the stack of 2D images in a different viewpoint. Many features are worth exploiting such as incorporating the Qt Graphics User Interface to add a transfer function editor in order to adjust the color and opacity without hardcoding their values. 
 
