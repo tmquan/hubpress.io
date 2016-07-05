@@ -14,9 +14,7 @@ image:https://github.com/tmquan/deepVolumeRendering/blob/master/foot.gif?raw=tru
 Volume Rendering is a technique that help us to see the entire 3D brain at once by controlling the visibility of data in part. Specifically, we can adjust the transparency of 3D data and project the entire stack onto 2D screen. 
 In common, we have to construct the rendering pipeline that transform 3D data to 2D screen. These lines of the below Python code explains how to do it. 
 
-
-[source,python]
-----
+```
 #!/usr/bin/env python
 # This file is a part of Dolfin project
 __author__ 	= "Tran Minh Quan"
@@ -84,7 +82,9 @@ camera.SetViewUp(0, 0, -1)
 renWin.Render()
 iren.Initialize()
 iren.Start()
-----
+``` 
+
+:asciidoctor-source:
 image:https://github.com/tmquan/deepVolumeRendering/blob/master/render.gif?raw=true[]
 
 To this end, we have just started a very simple approach which leverages the built-in implementations of Volume Rendering technique in VTK to construct a 3D viewer and “see” the stack of 2D images in a different viewpoint. Many features are worth exploiting such as incorporating the Qt Graphics User Interface to add a transfer function editor in order to adjust the color and opacity without hardcoded their values. 
