@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Volume Rendering with Visualization Toolkit (VTK)</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://tmquan.github.io/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="//tmquan.github.io/themes/casper/assets/css/screen.css?v=1467744327224" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+
+    <link rel="canonical" href="https://tmquan.github.io/2016/07/06/Volume-Rendering-with-Visualization-Toolkit-VTK.html" />
+    <meta name="referrer" content="origin" />
+    
+    <meta property="og:site_name" content="Deep Oriented Learning Feature of Inadequacy Network - Dolfin&#x27;s blog" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Volume Rendering with Visualization Toolkit (VTK)" />
+    <meta property="og:description" content="In our modern world these days, seeing or visualizing data gains much more attentions for clarifying the theory of domain specific knowledge. For instance, in connectomics, with the help of Electron Microscope, scientists are able to discover the very complex structures such as neurons and its corresponding axons, synapses, vesicles" />
+    <meta property="og:url" content="https://tmquan.github.io/2016/07/06/Volume-Rendering-with-Visualization-Toolkit-VTK.html" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Volume Rendering with Visualization Toolkit (VTK)" />
+    <meta name="twitter:description" content="In our modern world these days, seeing or visualizing data gains much more attentions for clarifying the theory of domain specific knowledge. For instance, in connectomics, with the help of Electron Microscope, scientists are able to discover the very complex structures such as neurons and its corresponding axons, synapses, vesicles" />
+    <meta name="twitter:url" content="https://tmquan.github.io/2016/07/06/Volume-Rendering-with-Visualization-Toolkit-VTK.html" />
+    
+    <script type="application/ld+json">
+null
+    </script>
+
+    <meta name="generator" content="HubPress" />
+    <link rel="alternate" type="application/rss+xml" title="Deep Oriented Learning Feature of Inadequacy Network - Dolfin&#x27;s blog" href="https://tmquan.github.io/rss/" />
+</head>
+<body class="post-template nav-closed">
+
+    
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post">
+
+        <header class="post-header">
+            <h1 class="post-title">Volume Rendering with Visualization Toolkit (VTK)</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2016-07-06">06 July 2016</time> 
+            </section>
+        </header>
+
+        <section class="post-content">
+            <div class="paragraph">
+<p><span class="image"><img src="http://wireddifferently.org/wp-content/themes/u-design/sliders/cycle/cycle1/images/locallowres_newoverview2_940x400.jpg" alt="locallowres newoverview2 940x400.jpg"></span></p>
+</div>
+<div class="paragraph">
+<p>In our modern world these days, seeing or visualizing data gains much more attentions for clarifying the theory of domain specific knowledge. For instance, in connectomics, with the help of Electron Microscope, scientists are able to discover the very complex structures such as neurons and its corresponding axons, synapses, vesicles and so on. Therefore, they can construct the experimental proofs that support or protest our ancients’ classical observations with the absence of nano-scaled instruments.</p>
+</div>
+<div class="paragraph">
+<p>The term connectomics stands for a brand-new and cutting-edge research direction in basic sciences, for more specific, neuroscience. People who work in this field are particularly interested in how our human brains work and wish to understand the way that our memory are stored and processed. They started with investigating the worm C. elegans which has modest neural system including around 7000 connections between roughly 300 neurons (in 1970s), approached to bigger species like zebrafishes, mice, chimpanzees, etc. and rarely apply to human. At this moment, with the stage of the art medical equipment explosion, we are about to enter the era of revealing our most complex organ’s behaviors: the brains.</p>
+</div>
+<div class="paragraph">
+<p>This post will work you through the very basic steps that show how to play with Volume Rendering on Medical Image data such as Compute Tomography (CT) or Magnetic Resonance Image (MRI), to name a few. We will use Python wrappers of the Visualization Toolkit (VTK) to build the rendering pipeline. If your machine does not those frameworks, you may need to install them.
+Medical Image data is commonly store in DICOM (Digital Imaging and Communications in Medicine) format. In order to make it really simple, the MR images of a brain are extracted from DICOM files are laid out in a rectilinear grid as a stack of 2D TIFF images. Unfortunately, as depicted in the below figure, when we go through this stack, we are able the see its texture in one slice at a time but not the entire stack as a whole.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="https://github.com/tmquan/deepVolumeRendering/blob/master/foot.gif?raw=true" alt="foot.gif?raw=true"></span></p>
+</div>
+<div class="paragraph">
+<p>Volume Rendering is a technique that help us to see the entire 3D brain at once by controlling the visibility of data in part. Specifically, we can adjust the transparency of 3D data and project the entire stack onto 2D screen.
+In common, we have to construct the rendering pipeline that transform 3D data to 2D screen. These lines of the below Python code explains how to do it.</p>
+</div>
+<div class="paragraph">
+<p>gist:794525812a8eb29bf803821909fa7d35[]</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">#!/usr/bin/env python
+# This file is a part of Dolfin project
+__author__ 	= "Tran Minh Quan"
+__license__ 	= "GPL"
+__version__ 	= "0.0.1"
+__date__	= "2016-07-06"
+__email__ 	= "quantm@unist.ac.kr"
+
+from vtk import *
+
+# Construct the color functor and opacity (transparency) functor
+reader 		= vtkTIFFReader()
+mapper 		= vtkFixedPointVolumeRayCastMapper()
+property 	= vtkVolumeProperty()
+colorFunc 	= vtkColorTransferFunction()
+opacityFunc	= vtkPiecewiseFunction()
+volume 		= vtkVolume()
+
+# Read the tif file to vtk reader
+reader.SetFileName('foot.tif')
+reader.Update()
+
+# Set up the Mapper
+mapper.SetInputConnection(reader.GetOutputPort())
+mapper.SetBlendModeToMaximumIntensity()
+
+# Set up the Property
+colorFunc.AddRGBSegment(0.0,   0.0, 0.0, 0.0,
+			255.0, 1.0, 1.0, 1.0)
+opacityWindow = 4096
+opacityLevel  = 1024
+opacityFunc.AddSegment(opacityLevel - 0.5*opacityWindow, 0.0,
+                       opacityLevel + 0.5*opacityWindow, 1.0 )
+property.SetIndependentComponents(True)
+property.SetColor(colorFunc)
+property.SetScalarOpacity(opacityFunc)
+property.SetInterpolationTypeToLinear()
+
+# Set up the Volume
+volume.SetMapper(mapper)
+volume.SetProperty(property)
+# Set up the renderer
+render 	= vtkRenderer()
+render.SetBackground(0,0,0)
+# Add volume
+render.AddVolume(volume)
+
+# Set up the windows
+renWin	= vtkRenderWindow()
+renWin.SetSize(512, 512)
+renWin.AddRenderer(render)
+
+# Set up the interactor
+iren 	= vtkRenderWindowInteractor()
+iren.SetRenderWindow(renWin)
+
+# Set up the camera
+camera  = render.GetActiveCamera()
+center 	= volume.GetCenter()
+camera.SetFocalPoint(center[0], center[1], center[2])
+camera.SetPosition(center[0], center[1]-512, center[2])
+camera.SetViewUp(0, 0, -1)
+
+# Start renderer
+renWin.Render()
+iren.Initialize()
+iren.Start()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="https://github.com/tmquan/deepVolumeRendering/blob/master/render.gif?raw=true" alt="render.gif?raw=true"></span></p>
+</div>
+<div class="paragraph">
+<p>To this end, we have just started a very simple approach which leverages the built-in implementations of Volume Rendering technique in VTK to construct a 3D viewer and “see” the stack of 2D images in a different viewpoint. Many features are worth exploiting such as incorporating the Qt Graphics User Interface to add a transfer function editor in order to adjust the color and opacity without hardcoded their values.</p>
+</div>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="https://tmquan.github.io/author/tmquan/" style="background-image: url(https://avatars.githubusercontent.com/u/4506781?v&#x3D;3)"><span class="hidden">Tran Minh Quan's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="https://tmquan.github.io/author/tmquan/">Tran Minh Quan</a></h4>
+
+                    <p>Read <a href="https://tmquan.github.io/author/tmquan/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Volume%20Rendering%20with%20Visualization%20Toolkit%20(VTK)&amp;url=https://tmquan.github.io/2016/07/06/Volume-Rendering-with-Visualization-Toolkit-VTK.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://tmquan.github.io/2016/07/06/Volume-Rendering-with-Visualization-Toolkit-VTK.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://tmquan.github.io/2016/07/06/Volume-Rendering-with-Visualization-Toolkit-VTK.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+
+
+    </article>
+
+</main>
+
+<aside class="read-next">
+</aside>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="https://tmquan.github.io">Deep Oriented Learning Feature of Inadequacy Network - Dolfin&#x27;s blog</a> &copy; 2016</section>
+            <section class="poweredby">Proudly published with <a href="http://hubpress.io">HubPress</a></section>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();
+      </script>
+
+    <script type="text/javascript" src="//tmquan.github.io/themes/casper/assets/js/jquery.fitvids.js?v=1467744327224"></script>
+    <script type="text/javascript" src="//tmquan.github.io/themes/casper/assets/js/index.js?v=1467744327224"></script>
+
+</body>
+</html>
