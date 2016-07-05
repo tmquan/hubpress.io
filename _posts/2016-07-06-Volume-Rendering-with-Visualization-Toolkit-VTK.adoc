@@ -1,0 +1,92 @@
+= Volume Rendering with Visualization Toolkit (VTK)
+
+image:http://wireddifferently.org/wp-content/themes/u-design/sliders/cycle/cycle1/images/locallowres_newoverview2_940x400.jpg[]
+
+In our modern world these days, seeing or visualizing data gains much more attentions for clarifying the theory of domain specific knowledge. For instance, in connectomics, with the help of Electron Microscope, scientists are able to discover the very complex structures such as neurons and its corresponding axons, synapses, vesicles and so on. Therefore, they can construct the experimental proofs that support or protest our ancients’ classical observations with the absence of nano-scaled instruments. 
+
+The term connectomics stands for a brand-new and cutting-edge research direction in basic sciences, for more specific, neuroscience. People who work in this field are particularly interested in how our human brains work and wish to understand the way that our memory are stored and processed. They started with investigating the worm C. elegans which has modest neural system including around 7000 connections between roughly 300 neurons (in 1970s), approached to bigger species like zebrafishes, mice, chimpanzees, etc. and rarely apply to human. At this moment, with the stage of the art medical equipment explosion, we are about to enter the era of revealing our most complex organ’s behaviors: the brains. 
+
+This post will work you through the very basic steps that show how to play with Volume Rendering on Medical Image data such as Compute Tomography (CT) or Magnetic Resonance Image (MRI), to name a few. We will use Python wrappers of the Visualization Toolkit (VTK) to build the rendering pipeline. If your machine does not those frameworks, you may need to install them. 
+Medical Image data is commonly store in DICOM (Digital Imaging and Communications in Medicine) format. In order to make it really simple, the MR images of a brain are extracted from DICOM files are laid out in a rectilinear grid as a stack of 2D TIFF images. Unfortunately, as depicted in the below figure, when we go through this stack, we are able the see its texture in one slice at a time but not the entire stack as a whole. 
+
+image:https://github.com/tmquan/deepVolumeRendering/blob/master/foot.gif?raw=true[]
+
+Volume Rendering is a technique that help us to see the entire 3D brain at once by controlling the visibility of data in part. Specifically, we can adjust the transparency of 3D data and project the entire stack onto 2D screen. 
+In common, we have to construct the rendering pipeline that transform 3D data to 2D screen. These lines of the below Python code explains how to do it. 
+
+
+
+[source,python]
+----
+#!/usr/bin/env python
+# This file is a part of Dolfin project
+__author__ 	= "Tran Minh Quan"
+__license__ 	= "GPL"
+__version__ 	= "0.0.1"
+__date__	= "2016-07-06"
+__email__ 	= "quantm@unist.ac.kr"
+
+from vtk import *
+
+# Construct the color functor and opacity (transparency) functor
+reader 		= vtkTIFFReader()
+mapper 		= vtkFixedPointVolumeRayCastMapper()
+property 	= vtkVolumeProperty()
+colorFunc 	= vtkColorTransferFunction()
+opacityFunc	= vtkPiecewiseFunction()
+volume 		= vtkVolume()
+
+# Read the tif file to vtk reader
+reader.SetFileName('foot.tif')
+reader.Update()
+
+# Set up the Mapper
+mapper.SetInputConnection(reader.GetOutputPort())
+mapper.SetBlendModeToMaximumIntensity()
+
+# Set up the Property
+colorFunc.AddRGBSegment(0.0,   0.0, 0.0, 0.0, 
+			255.0, 1.0, 1.0, 1.0)
+opacityWindow = 4096
+opacityLevel  = 1024
+opacityFunc.AddSegment(opacityLevel - 0.5*opacityWindow, 0.0,
+      				   opacityLevel + 0.5*opacityWindow, 1.0 )
+property.SetIndependentComponents(True)
+property.SetColor(colorFunc)
+property.SetScalarOpacity(opacityFunc)
+property.SetInterpolationTypeToLinear()
+
+# Set up the Volume 
+volume.SetMapper(mapper)
+volume.SetProperty(property)
+# Set up the renderer
+render 	= vtkRenderer()
+render.SetBackground(0,0,0)
+# Add volume
+render.AddVolume(volume)
+
+# Set up the windows
+renWin	= vtkRenderWindow()
+renWin.SetSize(512, 512)
+renWin.AddRenderer(render)
+
+# Set up the interactor
+iren 	= vtkRenderWindowInteractor()
+iren.SetRenderWindow(renWin)
+
+# Set up the camera
+camera  = render.GetActiveCamera()
+center 	= volume.GetCenter()
+camera.SetFocalPoint(center[0], center[1], center[2])
+camera.SetPosition(center[0], center[1]-512, center[2])
+camera.SetViewUp(0, 0, -1)
+
+# Start renderer
+renWin.Render()
+iren.Initialize()
+iren.Start()
+----
+image:https://github.com/tmquan/deepVolumeRendering/blob/master/render.gif?raw=true[]
+
+To this end, we have just started a very simple approach which leverages the built-in implementations of Volume Rendering technique in VTK to construct a 3D viewer and “see” the stack of 2D images in a different viewpoint. Many features are worth exploiting such as incorporating the Qt Graphics User Interface to add a transfer function editor in order to adjust the color and opacity without hardcoded their values. 
+
