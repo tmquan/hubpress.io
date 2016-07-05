@@ -15,7 +15,7 @@ Volume Rendering is a technique that help us to see the entire 3D brain at once 
 In common, we have to construct the rendering pipeline that transform 3D data to 2D screen. These lines of the below Python code explains how to do it. 
 
 
-
+gist:794525812a8eb29bf803821909fa7d35[]
 [source,python]
 ----
 #!/usr/bin/env python
@@ -50,7 +50,7 @@ colorFunc.AddRGBSegment(0.0,   0.0, 0.0, 0.0,
 opacityWindow = 4096
 opacityLevel  = 1024
 opacityFunc.AddSegment(opacityLevel - 0.5*opacityWindow, 0.0,
-      				   opacityLevel + 0.5*opacityWindow, 1.0 )
+                       opacityLevel + 0.5*opacityWindow, 1.0 )
 property.SetIndependentComponents(True)
 property.SetColor(colorFunc)
 property.SetScalarOpacity(opacityFunc)
