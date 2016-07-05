@@ -13,7 +13,7 @@ Medical Image data is commonly store in DICOM (Digital Imaging and Communication
 image:https://github.com/tmquan/deepVolumeRendering/blob/master/foot.gif?raw=true[]
 
 Volume Rendering is a technique that help us to see the entire 3D brain at once by controlling the visibility of data in part. Specifically, we can adjust the transparency of 3D data and project the entire stack onto 2D screen. 
-In common, we have to construct the rendering pipeline that transform 3D data to 2D screen. These lines of the below Python code explains how to do it. 
+In common, we have to construct the rendering pipeline that transform 3D data to 2D screen. These lines of the below Python code explain how to do it. 
 
 ```
 #!/usr/bin/env python
