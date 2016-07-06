@@ -8,7 +8,7 @@ The term connectomics stands for a brand-new and cutting-edge research direction
 
 This post will work you through the very basic steps that show how to play with Volume Rendering on Medical Image data such as Compute Tomography (CT) or Magnetic Resonance Image (MRI), to name a few. We will use Python wrappers of the Visualization Toolkit (VTK) to build the rendering pipeline. If your machine does not those frameworks, you may need to install them. 
 
-Medical Image data is commonly store in DICOM (Digital Imaging and Communications in Medicine) format. In order to make it really simple, the MR images of a brain are extracted from DICOM files and laid out in a rectilinear grid as a stack of 2D TIFF images. Unfortunately, as depicted in the below figure, when we go through this stack, we are able the see its texture in one slice at a time but not the entire stack as a whole. 
+Medical Image data is commonly stored in DICOM (Digital Imaging and Communications in Medicine) format. In order to make it really simple, the MR images of a brain are extracted from DICOM files and laid out in a rectilinear grid as a stack of 2D TIFF images. Unfortunately, as depicted in the below figure, when we go through this stack, we are able the see its texture in one slice at a time but not the entire stack as a whole. 
 
 image:https://github.com/tmquan/deepVolumeRendering/blob/master/foot.gif?raw=true[]
 
