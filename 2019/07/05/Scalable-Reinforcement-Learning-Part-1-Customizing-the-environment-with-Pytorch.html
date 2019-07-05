@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Scalable Reinforcement Learning: Part 1 - Customizing the environment with Pytorch</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://tmquan.github.io/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="//tmquan.github.io/themes/casper/assets/css/screen.css?v=1562301992350" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+
+    <link rel="canonical" href="https://tmquan.github.io/2019/07/05/Scalable-Reinforcement-Learning-Part-1-Customizing-the-environment-with-Pytorch.html" />
+    <meta name="referrer" content="origin" />
+    
+    <meta property="og:site_name" content="Deep Oriented Learning Feature of Inadequacy Network - Dolfin&#x27;s blog" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Scalable Reinforcement Learning: Part 1 - Customizing the environment with Pytorch" />
+    <meta property="og:description" content="Reinforcement Learning (RL) is the area of applying Machine Learning techniques to optimal control problems. RL models usually consist of agents and interactive environments. They focus on acting and decision making at each time step to change the state of the environment in order to achieve an optimal result when" />
+    <meta property="og:url" content="https://tmquan.github.io/2019/07/05/Scalable-Reinforcement-Learning-Part-1-Customizing-the-environment-with-Pytorch.html" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Scalable Reinforcement Learning: Part 1 - Customizing the environment with Pytorch" />
+    <meta name="twitter:description" content="Reinforcement Learning (RL) is the area of applying Machine Learning techniques to optimal control problems. RL models usually consist of agents and interactive environments. They focus on acting and decision making at each time step to change the state of the environment in order to achieve an optimal result when" />
+    <meta name="twitter:url" content="https://tmquan.github.io/2019/07/05/Scalable-Reinforcement-Learning-Part-1-Customizing-the-environment-with-Pytorch.html" />
+    
+    <script type="application/ld+json">
+null
+    </script>
+
+    <meta name="generator" content="HubPress" />
+    <link rel="alternate" type="application/rss+xml" title="Deep Oriented Learning Feature of Inadequacy Network - Dolfin&#x27;s blog" href="https://tmquan.github.io/rss/" />
+</head>
+<body class="post-template nav-closed">
+
+    
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post">
+
+        <header class="post-header">
+            <h1 class="post-title">Scalable Reinforcement Learning: Part 1 - Customizing the environment with Pytorch</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2019-07-05">05 July 2019</time> 
+            </section>
+        </header>
+
+        <section class="post-content">
+            <div class="paragraph">
+<p>Reinforcement Learning (RL) is the area of applying Machine Learning techniques to optimal control problems.
+RL models usually consist of agents and interactive environments.
+They focus on acting and decision making at each time step to change the state of the environment in order to achieve an optimal result when the interactivity (episode) finished.
+The applications of RL are massive-fold, in various domains which need decision making, from robotics to social advertisements.
+There are interesting examples that can be listed, such as self-learning robotics (Google AI), DeepRL for autonomous driving car, Google HVAC, Recommender systems, Visual question answering (VQA), DeepRL for chatbots, AlphaGo Zero, autoML, JPMorgan, etc.
+However, gamifying the image processing applications is still not straightforward since the pool of actions is not well defined and its solution is not yet robust compared to end-to-end solutions (e.g., using Fully Convolutional Networks).
+In the future research work, I wish to use an RL algorithm (Deep Q Network or more advanced methods) to solve a general image processing task, which is still in an early stage of interest, by working to design a proper set of actions.</p>
+</div>
+<div class="paragraph">
+<p>For the first glance, in order to adopt the common framework and terminologies from RL perspective, we need to implement a base class custom environment and inherit that to extend the environment&#8217;s feature of deadling with image environment.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>import abc
+import gym
+
+class CustomEnvironment(gym.Env):
+    metadata = {'render.modes': ['human']}
+    # reward_range = (0.0, 1.0)
+    @abc.abstractmethod
+    def __init__(self):
+        self.__version__ = "0.0.1"
+        print("Init CustomObject")
+        # Modify the observation space, low, high and shape values according to your custom environment's needs
+        # self.observation_space = gym.spaces.Box(low=0.0, high=1.0, shape=(3,))
+        # Modify the action space, and dimension according to your custom environment's needs
+        # self.action_space = gym.spaces.Discrete(4)
+        pass
+
+    @abc.abstractmethod
+    def step(self, action):
+        """
+        Runs one time-step of the environment's dynamics. The reset() method is called at the end of every episode
+        :param action: The action to be executed in the environment
+        :return: (observation, reward, done, info)
+            observation (object):
+                Observation from the environment at the current time-step
+            reward (float):
+                Reward from the environment due to the previous action performed
+            done (bool):
+                a boolean, indicating whether the episode has ended
+            info (dict):
+                a dictionary containing additional information about the previous action
+        """
+        # Implement your step method here
+        # return (observation, reward, done, info)
+        pass
+
+    @abc.abstractmethod
+    def reset(self):
+        """
+        Reset the environment state and returns an initial observation
+        Returns
+        -------
+        observation (object): The initial observation for the new episode after reset
+        :return:
+        """
+
+        # Implement your reset method here
+        # return observation
+
+    @abc.abstractmethod
+    def render(self, mode='human', close=False):
+        """
+        :param mode:
+        :return:
+        """
+        pass</code></pre>
+</div>
+</div>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="https://tmquan.github.io/author/tmquan/" style="background-image: url(https://avatars1.githubusercontent.com/u/4506781?v&#x3D;4)"><span class="hidden">Lotus_Cin's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="https://tmquan.github.io/author/tmquan/">Lotus_Cin</a></h4>
+
+                    <p>Read <a href="https://tmquan.github.io/author/tmquan/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Scalable%20Reinforcement%20Learning%3A%20Part%201%20-%20Customizing%20the%20environment%20with%20Pytorch&amp;url=https://tmquan.github.io/2019/07/05/Scalable-Reinforcement-Learning-Part-1-Customizing-the-environment-with-Pytorch.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://tmquan.github.io/2019/07/05/Scalable-Reinforcement-Learning-Part-1-Customizing-the-environment-with-Pytorch.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://tmquan.github.io/2019/07/05/Scalable-Reinforcement-Learning-Part-1-Customizing-the-environment-with-Pytorch.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+
+
+    </article>
+
+</main>
+
+<aside class="read-next">
+</aside>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="https://tmquan.github.io">Deep Oriented Learning Feature of Inadequacy Network - Dolfin&#x27;s blog</a> &copy; 2019</section>
+            <section class="poweredby">Proudly published with <a href="http://hubpress.io">HubPress</a></section>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();
+      </script>
+
+    <script type="text/javascript" src="//tmquan.github.io/themes/casper/assets/js/jquery.fitvids.js?v=1562301992350"></script>
+    <script type="text/javascript" src="//tmquan.github.io/themes/casper/assets/js/index.js?v=1562301992350"></script>
+
+</body>
+</html>
