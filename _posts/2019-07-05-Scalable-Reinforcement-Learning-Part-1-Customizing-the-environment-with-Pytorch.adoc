@@ -11,7 +11,7 @@ In the future research work, I wish to use an RL algorithm (Deep Q Network or mo
 For the first glance, in order to adopt the common framework and terminologies from RL perspective, we need to implement a base class custom environment and inherit that to extend the environment's feature of deadling with image environment. 
 
 
-```python
+```
 import abc
 import gym
 
