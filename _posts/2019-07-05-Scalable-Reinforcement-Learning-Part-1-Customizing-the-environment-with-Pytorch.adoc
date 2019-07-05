@@ -8,7 +8,7 @@ There are interesting examples that can be listed, such as self-learning robotic
 However, gamifying the image processing applications is still not straightforward since the pool of actions is not well defined and its solution is not yet robust compared to end-to-end solutions (e.g., using Fully Convolutional Networks). 
 In the future research work, I wish to use an RL algorithm (Deep Q Network or more advanced methods) to solve a general image processing task, which is still in an early stage of interest, by working to design a proper set of actions. 
 
-For the first glance, in order to adopt the common framework and terminologies from RL perspective, we need to implement a base class custom environment and inherit that to extend the environment's feature of deadling with image environment. 
+For the first glance, in order to adopt the common framework and terminologies from RL perspective, we need to implement a base class custom environment and inherit that to extend the environment's feature of dealing with image environment. 
 
 
 ```
@@ -68,3 +68,5 @@ class CustomEnvironment(gym.Env):
         """
         pass
 ```
+
+(to be continued)
