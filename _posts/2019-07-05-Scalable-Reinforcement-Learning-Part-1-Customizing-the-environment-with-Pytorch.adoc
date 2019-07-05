@@ -1,0 +1,70 @@
+= Scalable Reinforcement Learning: Part 1 - Customizing the environment with Pytorch
+
+Reinforcement Learning (RL) is the area of applying Machine Learning techniques to optimal control problems. 
+RL models usually consist of agents and interactive environments. 
+They focus on acting and decision making at each time step to change the state of the environment in order to achieve an optimal result when the interactivity (episode) finished. 
+The applications of RL are massive-fold, in various domains which need decision making, from robotics to social advertisements. 
+There are interesting examples that can be listed, such as self-learning robotics (Google AI), DeepRL for autonomous driving car, Google HVAC, Recommender systems, Visual question answering (VQA), DeepRL for chatbots, AlphaGo Zero, autoML, JPMorgan, etc.
+However, gamifying the image processing applications is still not straightforward since the pool of actions is not well defined and its solution is not yet robust compared to end-to-end solutions (e.g., using Fully Convolutional Networks). 
+In the future research work, I wish to use an RL algorithm (Deep Q Network or more advanced methods) to solve a general image processing task, which is still in an early stage of interest, by working to design a proper set of actions. 
+
+For the first glance, in order to adopt the common framework and terminologies from RL perspective, we need to implement a base class custom environment and inherit that to extend the environment's feature of deadling with image environment. 
+
+
+```python
+import abc
+import gym
+
+class CustomEnvironment(gym.Env):
+    metadata = {'render.modes': ['human']}
+    # reward_range = (0.0, 1.0)
+    @abc.abstractmethod
+    def __init__(self):
+        self.__version__ = "0.0.1"
+        print("Init CustomObject")
+        # Modify the observation space, low, high and shape values according to your custom environment's needs
+        # self.observation_space = gym.spaces.Box(low=0.0, high=1.0, shape=(3,))
+        # Modify the action space, and dimension according to your custom environment's needs
+        # self.action_space = gym.spaces.Discrete(4)
+        pass
+
+    @abc.abstractmethod
+    def step(self, action):
+        """
+        Runs one time-step of the environment's dynamics. The reset() method is called at the end of every episode
+        :param action: The action to be executed in the environment
+        :return: (observation, reward, done, info)
+            observation (object):
+                Observation from the environment at the current time-step
+            reward (float):
+                Reward from the environment due to the previous action performed
+            done (bool):
+                a boolean, indicating whether the episode has ended
+            info (dict):
+                a dictionary containing additional information about the previous action
+        """
+        # Implement your step method here
+        # return (observation, reward, done, info)
+        pass
+
+    @abc.abstractmethod
+    def reset(self):
+        """
+        Reset the environment state and returns an initial observation
+        Returns
+        -------
+        observation (object): The initial observation for the new episode after reset
+        :return:
+        """
+
+        # Implement your reset method here
+        # return observation
+
+    @abc.abstractmethod
+    def render(self, mode='human', close=False):
+        """
+        :param mode:
+        :return:
+        """
+        pass
+```
